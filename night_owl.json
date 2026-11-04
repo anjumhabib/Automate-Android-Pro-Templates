@@ -1,0 +1,253 @@
+[
+  {
+    "rule": {
+      "id": 1,
+      "name": "Work Mode - Auto Mute & Office Wi-Fi",
+      "description": "Automatically silences device and connects to office Wi-Fi during work hours when arriving at the workplace.",
+      "isEnabled": true
+    },
+    "triggers": [
+      {
+        "id": 1,
+        "ruleId": 1,
+        "triggerType": "LOCATION_GEOFENCE",
+        "parametersJson": "{\"latitude\":37.7891,\"longitude\":-122.4014,\"radiusMeters\":150,\"transitionType\":\"ENTER\"}",
+        "isEnabled": true
+      }
+    ],
+    "conditions": [
+      {
+        "id": 1,
+        "ruleId": 1,
+        "conditionType": "TIME_RANGE",
+        "parametersJson": "{\"startHour\":9,\"startMinute\":0,\"endHour\":18,\"endMinute\":0,\"daysOfWeek\":[2,3,4,5,6]}",
+        "logicalOperator": "AND",
+        "isEnabled": true,
+        "executionOrder": 0
+      }
+    ],
+    "actions": [
+      {
+        "id": 1,
+        "ruleId": 1,
+        "actionType": "SET_RINGER_MODE",
+        "parametersJson": "{\"mode\":\"VIBRATE\"}",
+        "isEnabled": true,
+        "executionOrder": 0
+      },
+      {
+        "id": 2,
+        "ruleId": 1,
+        "actionType": "SET_WIFI",
+        "parametersJson": "{\"state\":\"ENABLED\"}",
+        "isEnabled": true,
+        "executionOrder": 1
+      },
+      {
+        "id": 3,
+        "ruleId": 1,
+        "actionType": "SHOW_NOTIFICATION",
+        "parametersJson": "{\"title\":\"Work Mode Active\",\"message\":\"Device silenced and connected to Office Wi-Fi\"}",
+        "isEnabled": true,
+        "executionOrder": 2
+      }
+    ]
+  },
+  {
+    "rule": {
+      "id": 2,
+      "name": "Night Sleep - DND & Dim Display",
+      "description": "Enables Silent mode, dims screen brightness, and displays bedtime confirmation when connected to charger at night.",
+      "isEnabled": true
+    },
+    "triggers": [
+      {
+        "id": 2,
+        "ruleId": 2,
+        "triggerType": "POWER_STATE",
+        "parametersJson": "{\"state\":\"CONNECTED\"}",
+        "isEnabled": true
+      }
+    ],
+    "conditions": [
+      {
+        "id": 2,
+        "ruleId": 2,
+        "conditionType": "TIME_RANGE",
+        "parametersJson": "{\"startHour\":23,\"startMinute\":0,\"endHour\":7,\"endMinute\":0}",
+        "logicalOperator": "AND",
+        "isEnabled": true,
+        "executionOrder": 0
+      }
+    ],
+    "actions": [
+      {
+        "id": 4,
+        "ruleId": 2,
+        "actionType": "SET_RINGER_MODE",
+        "parametersJson": "{\"mode\":\"SILENT\"}",
+        "isEnabled": true,
+        "executionOrder": 0
+      },
+      {
+        "id": 5,
+        "ruleId": 2,
+        "actionType": "SET_BRIGHTNESS",
+        "parametersJson": "{\"brightness\":12}",
+        "isEnabled": true,
+        "executionOrder": 1
+      },
+      {
+        "id": 6,
+        "ruleId": 2,
+        "actionType": "SHOW_NOTIFICATION",
+        "parametersJson": "{\"title\":\"Goodnight Mode\",\"message\":\"Do Not Disturb enabled. Display brightness dimmed.\"}",
+        "isEnabled": true,
+        "executionOrder": 2
+      }
+    ]
+  },
+  {
+    "rule": {
+      "id": 3,
+      "name": "Car Bluetooth - Auto Drive Mode",
+      "description": "Sets optimal media volume and announces safe driving through voice text-to-speech when connecting to car Bluetooth.",
+      "isEnabled": true
+    },
+    "triggers": [
+      {
+        "id": 3,
+        "ruleId": 3,
+        "triggerType": "BLUETOOTH_STATE",
+        "parametersJson": "{\"checkHardwareState\":false,\"connected\":true,\"deviceName\":\"Car Audio Media\"}",
+        "isEnabled": true
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "id": 7,
+        "ruleId": 3,
+        "actionType": "SET_VOLUME",
+        "parametersJson": "{\"levelPercent\":85,\"streamType\":\"STREAM_MUSIC\"}",
+        "isEnabled": true,
+        "executionOrder": 0
+      },
+      {
+        "id": 8,
+        "ruleId": 3,
+        "actionType": "TEXT_TO_SPEECH",
+        "parametersJson": "{\"text\":\"Car Bluetooth connected. Safe driving!\",\"pitch\":1.0,\"speed\":1.0}",
+        "isEnabled": true,
+        "executionOrder": 1
+      }
+    ]
+  },
+  {
+    "rule": {
+      "id": 4,
+      "name": "Battery Low Saver (Below 20%)",
+      "description": "Conserves battery by enabling Battery Saver, dimming brightness, and sending a warning notification when below 20%.",
+      "isEnabled": true
+    },
+    "triggers": [
+      {
+        "id": 4,
+        "ruleId": 4,
+        "triggerType": "BATTERY_LEVEL",
+        "parametersJson": "{\"level\":20,\"operator\":\"<\"}",
+        "isEnabled": true
+      }
+    ],
+    "conditions": [
+      {
+        "id": 3,
+        "ruleId": 4,
+        "conditionType": "POWER_STATE",
+        "parametersJson": "{\"state\":\"DISCONNECTED\"}",
+        "logicalOperator": "AND",
+        "isEnabled": true,
+        "executionOrder": 0
+      }
+    ],
+    "actions": [
+      {
+        "id": 9,
+        "ruleId": 4,
+        "actionType": "SET_BATTERY_SAVER",
+        "parametersJson": "{\"state\":\"ENABLED\"}",
+        "isEnabled": true,
+        "executionOrder": 0
+      },
+      {
+        "id": 10,
+        "ruleId": 4,
+        "actionType": "SET_BRIGHTNESS",
+        "parametersJson": "{\"brightness\":20}",
+        "isEnabled": true,
+        "executionOrder": 1
+      },
+      {
+        "id": 11,
+        "ruleId": 4,
+        "actionType": "SHOW_NOTIFICATION",
+        "parametersJson": "{\"title\":\"Battery Saver Activated\",\"message\":\"Battery is below 20%. Background limits applied.\"}",
+        "isEnabled": true,
+        "executionOrder": 2
+      }
+    ]
+  },
+  {
+    "rule": {
+      "id": 5,
+      "name": "Home Arrival - Welcome & Unmute",
+      "description": "Automatically connects to home Wi-Fi, restores ringer volume to normal, and speaks a welcome greeting when arriving home.",
+      "isEnabled": true
+    },
+    "triggers": [
+      {
+        "id": 5,
+        "ruleId": 5,
+        "triggerType": "LOCATION_GEOFENCE",
+        "parametersJson": "{\"latitude\":37.7749,\"longitude\":-122.4194,\"radiusMeters\":100,\"transitionType\":\"ENTER\"}",
+        "isEnabled": true
+      }
+    ],
+    "conditions": [],
+    "actions": [
+      {
+        "id": 12,
+        "ruleId": 5,
+        "actionType": "SET_WIFI",
+        "parametersJson": "{\"state\":\"ENABLED\"}",
+        "isEnabled": true,
+        "executionOrder": 0
+      },
+      {
+        "id": 13,
+        "ruleId": 5,
+        "actionType": "SET_RINGER_MODE",
+        "parametersJson": "{\"mode\":\"NORMAL\"}",
+        "isEnabled": true,
+        "executionOrder": 1
+      },
+      {
+        "id": 14,
+        "ruleId": 5,
+        "actionType": "SET_VOLUME",
+        "parametersJson": "{\"levelPercent\":70,\"streamType\":\"STREAM_RING\"}",
+        "isEnabled": true,
+        "executionOrder": 2
+      },
+      {
+        "id": 15,
+        "ruleId": 5,
+        "actionType": "TEXT_TO_SPEECH",
+        "parametersJson": "{\"text\":\"Welcome home! Wi-Fi connected and ringer restored.\",\"pitch\":1.0,\"speed\":1.0}",
+        "isEnabled": true,
+        "executionOrder": 3
+      }
+    ]
+  }
+]
+
